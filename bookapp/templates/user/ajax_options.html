@@ -1,0 +1,55 @@
+{% extends "user/home_layout.html" %}
+{% block content %}
+<div class="content px-3 py-3 bg-white">
+   <form action="" id="myform">
+<div class="row">
+   <div class="col">
+      {{ cform.email.label }}
+      {{ cform.email(class_='form-control border-success') }}
+   </div>
+
+   <div class="col">
+      <label for="" class="text-danger">This field is required</label><br>
+      {{ cform.csrf_token}}
+      {{ cform.btnsubmit(class_='btn btn-danger noround')}}
+   </div>
+   <div id="mydiv"></div>
+   </form>
+  
+</div>   
+</div>
+{% endblock content %}
+
+{% block customjs %}
+<script type="text/javascript">
+   $(document).ready(function(){
+      $('#btnsubmit').click(function(event){
+         event.preventDefault()
+         // var data = $('#myform').serialize() // name atribute must be set on the inputs, a form must exist and submit-table
+         var myform = document.getElementById('myform') //using jquery returns an array like this
+         var data2send =  $('#myform').serialize() //new FormData(myform) //just serialize(), picks all form data at once, can p.ick files too
+         //make ajax call
+         $.ajax({
+            url:"/ajaxopt/",
+            type:"post",
+            data:data2send,
+            dataType:'json', 
+            error:function(errmsg){
+               console.log(errmsg)
+            },
+            success:function(serverRsp){
+            $('#mydiv').html(serverRsp).addClass('alert alert-info')
+           
+            },
+            complete:function(){
+               $('#btnsubmit').val('Subscribe')
+            },
+            beforeSend:function(){
+               $('#btnsubmit').val('Please wait')
+            }
+         })
+      })
+   }) 
+</script>
+
+{% endblock %}

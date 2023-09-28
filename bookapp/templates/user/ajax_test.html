@@ -1,0 +1,76 @@
+{% extends "user/home_layout.html" %}
+
+{% block content %}
+
+<div class="content" style="background-color: white;padding:3em">
+
+</div>
+
+
+<form action="" method="post">
+ <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}"> 
+<input type="text" class="form-control border-success" id="fullname" name="fullname">
+<button class="btn btn-outline-dark mt-3" onclick="dis()" id="btnload">Click Me</button>
+<button class="btn btn-outline-dark mt-3" id="btn" type="button">submit</button>
+</form>
+
+<div class="mb-3 border-primary" id="feedback" style="background-color: white;padding:3em">
+   {{data}}
+</div>
+<div class="mb-3 border-primary" id="ajaxfeedback"></div>
+
+<form action="" method="get">
+<div class="row">
+   <div class="col">
+      <input type="text" id="email" class="form-control noround border-success">
+   </div>
+
+   <div class="col">
+      <button id="check" class="btn btn-warning noround" type="button" >Check Availability</button>
+   </div>
+</div>
+</form>
+<div class="col" id="avail"></div>
+
+{% endblock %}
+
+{% block customjs %}
+
+<script type="text/javascript">
+   function dis(){
+ var x = document.getElementById('fullname').value;
+  alert(x)
+  }
+
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+   $('#btn').click(function(){
+      fname = $('#fullname').val()
+      csrf = $('#csrf_token').val()
+      // data2send = "fullname="+fname // query string treats it as a get request
+      data2send = {"fullname":fname,"csrf_token":csrf}
+      $('#ajaxfeedback').load('/submission/',data2send,function(){
+         (this).addClass('alert alert-warning')
+      })
+   })
+
+   $('#btnload').click(function(){
+      $('#ajaxfeedback').load("/submission/")
+   })
+
+   $('#check').click(function(){
+      var email = $("#email").val()
+      var data = "username="+email
+      $("#avail").load("/checkusername/",data,function(){
+         (this).addClass("alert alert-info")
+         ("#btnload").attr('disabled','disabled')
+      })
+   })
+})
+
+</script>
+
+
+{% endblock %}

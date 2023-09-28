@@ -1,0 +1,32 @@
+{%extends "user/home_layout.html"}
+
+{%block content%}
+    <div class="content px-3 bg-white">
+        <div class="row">
+            <div class="col">
+                {{cform.email.label}}
+                {{cform.email(class_='form-control border-success')}}
+
+            </div>
+            <div class="col">
+                <label>The field is required</label><br>
+                {{cform.csrf_token}}
+                {{cform.btnsubmit}}
+            </div>
+        </div>
+
+
+    </div>
+
+
+{%endblock%}
+
+
+
+{%block customjs%}
+<script type="text/javascript">
+
+
+
+</script>
+{%endblock%}

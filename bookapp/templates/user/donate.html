@@ -1,0 +1,14 @@
+{% extends "user/home_layout.html"%}
+{% block content%}
+<form></form>
+    <div class="form-control">
+        <div class="mb-3">
+            {{ pform.fullname.label }}
+            {{ pform.fullname(class_='form-control border-success', value=userdeets.user_fullname) }}
+        </div>
+
+    </div>
+
+
+
+{%endblock%}

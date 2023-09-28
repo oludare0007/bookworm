@@ -1,0 +1,73 @@
+{% extends "user/home_layout.html" %}
+{% block content %}
+  <h2>Confirmation Page</h2>
+  <p>Kindly confirm the following details:</p>
+
+  <div class="mb-3">
+   <label for="">Donor's Name</label>
+   {{ donation_deets.don_fullname }}
+  </div>
+
+<div class="mb-3">
+   <label for="">Donor's Email</label>
+   {{ donation_deets.don_email }}
+</div>
+
+<div class="mb-3">
+   <label for="">Donor's Amount</label>
+   NGN{{ donation_deets.don_amt/100 }}
+</div>
+
+<div class="mb-3">
+   <label for="">TRANSACTION REF</label>
+   {{ donation_deets.don_refno }}
+</div>
+<form action="">
+   <div class="mb-3">
+      <a class="btn btn-warning no round" href="/dashboard">Cancel Payment</a>
+      <button class="btn btn-danger noround">Confirm Payment</button>
+      </div>
+      </form>
+      <hr>
+      <form action="" id="paymentForm">
+      <button class="btn btn-dark noround" onclick="payWithPaystack()">Confirm Payment(Pop Up)</button>
+  
+</form>
+
+{% endblock %}
+{% block customjs %}
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+   const paymentForm = document.getElementById('paymentForm');
+      paymentForm.addEventListener("submit", payWithPaystack, false);
+
+      function payWithPaystack(e) {
+         e.preventDefault();
+
+         let handler = PaystackPop.setup({
+            key: 'pk_test_5703af17dbd397d0a2a380ce88449b91a052e155', // Replace with your public key
+            email: "{{ donation_deets.don_email }}",
+            amount: "{{ donation_deets.don_amt }}",
+            ref: "{{ donation_deets.don_refno }}", // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+            // label: "Optional string that replaces customer email"
+            onClose: function () {
+               alert('Window closed.');
+            },
+            callback: function (response) {
+               console.log(reference);
+               let message = 'Payment complete! Reference: ' + response.reference;
+               alert(message);
+            }
+         });
+
+         handler.openIframe();
+      }
+
+</script>
+{% endblock %}
+
+{% block partner %}
+{% endblock %}
+
+{% block featured %}
+{% endblock %}
